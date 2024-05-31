@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -17,16 +17,37 @@ function MeshComponent() {
   });
 
   return (
-    <mesh ref={mesh}>
+    <mesh ref={mesh} scale={[1, 1, 1]}>
       <primitive object={gltf.scene} />
     </mesh>
   );
 }
 
 export function Staircase() {
+  const [height, setHeight] = useState("500px");
+
+  useEffect(() => {
+    const updateHeight = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setHeight("500px");
+      } else if (width < 1024) {
+        setHeight("600px");
+      } else {
+        setHeight("700px");
+      }
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+
+    return () => window.removeEventListener("resize", updateHeight);
+  }, []);
+
   return (
-    <div className="flex justify-center items-center h-[500px] md:h-[700px] lg:h-[900px]">
-      <Canvas className="">
+    // it is necessary to set height of canvas with inline style. Otherwise it won't work
+    <div className="flex justify-center items-center " style={{ height }}>
+      <Canvas className="h-full w-full">
         {/*  allows users to rotate, zoom, and pan the camera around a target */}
         <Suspense fallback={<Loader />}>
           <OrbitControls />
