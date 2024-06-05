@@ -9,7 +9,7 @@ const MeshComponent = lazy(() => import("@/models/DevOverflowModel"));
 
 export function DevOverflow() {
   return (
-    <div className="relative flex justify-center items-center h-[150px] md:h-[300px] lg:h-[500px] w-full">
+    <div className="relative flex justify-center items-center h-[120px] sm:h-[200px] md:h-[300px] lg:h-[500px] w-full">
       <Canvas
         className=""
         camera={{
